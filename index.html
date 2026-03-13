@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sorpresa especial</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+overflow:hidden;
+}
+
+#inicio,#juego,#contadorBox,#mensajeFinal{
+display:none;
+}
+
+button{
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:white;
+color:#ff4081;
+font-weight:bold;
+}
+
+#areaJuego{
+position:relative;
+width:400px;
+height:300px;
+background:rgba(255,255,255,0.2);
+border-radius:15px;
+margin:auto;
+overflow:hidden;
+}
+
+.corazon{
+position:absolute;
+font-size:25px;
+cursor:pointer;
+}
+
+#contador{
+font-size:35px;
+margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="inicio">
+<h1>💌 Un pequeño detalle lleno de sorpresas</h1>
+<p>Pero primero debes descubrirla</p>
+<button onclick="iniciarJuego()">Iniciar sorpresa</button>
+</div>
+
+<div id="juego">
+<h2>Atrapa 5 corazones ❤️</h2>
+<p>Puntos: <span id="puntos">0</span></p>
+
+<div id="areaJuego"></div>
+</div>
+
+<div id="contadorBox">
+<h1>🎂 Falta pocoquito para tu dia  🎂</h1>
+<div id="contador"></div>
+</div>
+
+<div id="mensajeFinal">
+<h1>🎉 ¡Feliz Cumpleaños! 🎉</h1>
+<p>
+Hoy recordamos esta fecha tan importante <br>
+Que este nuevo año de tu vida esté lleno<br>
+de alegría, sueños cumplidos y momentos hermosos. 💖
+</p>
+</div>
+
+<script>
+
+document.getElementById("inicio").style.display="block";
+
+var puntos=0;
+
+function iniciarJuego(){
+document.getElementById("inicio").style.display="none";
+document.getElementById("juego").style.display="block";
+crearCorazon();
+}
+
+function crearCorazon(){
+
+var corazon=document.createElement("div");
+corazon.className="corazon";
+corazon.innerHTML="❤️";
+
+corazon.style.left=Math.random()*350+"px";
+corazon.style.top=Math.random()*250+"px";
+
+corazon.onclick=function(){
+
+puntos++;
+document.getElementById("puntos").innerText=puntos;
+corazon.remove();
+
+if(puntos>=5){
+ganarJuego();
+}else{
+crearCorazon();
+}
+
+}
+
+document.getElementById("areaJuego").appendChild(corazon);
+
+}
+
+function ganarJuego(){
+
+document.getElementById("juego").style.display="none";
+document.getElementById("contadorBox").style.display="block";
+
+iniciarContador();
+
+}
+
+function iniciarContador(){
+
+var fechaCumple = new Date("March 22, 2026 00:00:00").getTime();
+
+var x=setInterval(function(){
+
+var ahora=new Date().getTime();
+var diferencia=fechaCumple-ahora;
+
+var dias=Math.floor(diferencia/(1000*60*60*24));
+var horas=Math.floor((diferencia%(1000*60*60*24))/(1000*60*60));
+var minutos=Math.floor((diferencia%(1000*60*60))/(1000*60));
+var segundos=Math.floor((diferencia%(1000*60))/1000);
+
+document.getElementById("contador").innerHTML=
+dias+"d "+horas+"h "+minutos+"m "+segundos+"s";
+
+if(diferencia<0){
+
+clearInterval(x);
+
+document.getElementById("contadorBox").style.display="none";
+document.getElementById("mensajeFinal").style.display="block";
+
+}
+
+},1000);
+
+}
+
+</script>
+
+</body>
+</html>
